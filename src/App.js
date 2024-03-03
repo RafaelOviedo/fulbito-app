@@ -6,7 +6,7 @@ import style from './App.module.css'
 
 function App() {
   return (
-    <div>
+    <div className={style.appContainer}>
       <NavBar />
       <div class={style.titleContainer}>Organizador Maconha FC</div>
       <Routes>
