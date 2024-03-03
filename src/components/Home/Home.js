@@ -5,6 +5,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 function Home() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [aliasValue, setAliasValue] = useState('');
+  const [selectedAlias, setSelectedAlias] = useState('');
 
   const selectLocation = (value) => {
     setSelectedLocation(value);
@@ -15,6 +17,13 @@ function Home() {
 
     setSelectedDate(formattedDate);
   }
+  const handleAliasChange = (value) => {
+    setAliasValue(value);
+  }
+  const selectAlias = () => {
+    setSelectedAlias(aliasValue);
+    setAliasValue('');
+  }
 
   return (
     <div className={style.homeContainer}>
@@ -24,25 +33,38 @@ function Home() {
 
       <div className={style.generalInfoContainer}>
         <div className={style.inputsContainer}>
-          <div className={style.locationInputContainer}>
-            <label className={style.locationInputLabel}>Lugar del partido:</label>
-            <select onChange={e => selectLocation(e.target.value)} className={style.locationSelect}>
-              <option value="">Elegi una sede</option>
-              <option value="El Predio - Arregui 2485">El Predio - Arregui 2540</option>
-              <option value="El Poli - Other Address">El Poli</option>
-            </select>
+          <div className={style.inputsRowOneContainer}>
+            <div className={style.locationInputContainer}>
+              <label className={style.locationInputLabel}>Lugar del partido:</label>
+              <select onChange={e => selectLocation(e.target.value)} className={style.locationSelect}>
+                <option value="">Elegi una sede</option>
+                <option value="El Predio - Arregui 2485">El Predio - Arregui 2540</option>
+                <option value="El Poli - Other Address">El Poli</option>
+                <option value="Futbol Comu">Futbol Comu</option>
+              </select>
+            </div>
+
+            <div className={style.dateInputContainer} disabled>
+              <label className={style.dateInputLabel}>Dia del partido:</label>
+              <DatePicker onChange={selectDate} value={selectedDate} slotProps={{ textField: { size: 'small' } }} />
+            </div>
           </div>
 
-          <div className={style.dateInputContainer} disabled>
-            <label className={style.dateInputLabel}>Dia del partido:</label>
-            <DatePicker onChange={selectDate} value={selectedDate} slotProps={{ textField: { size: 'small' } }} />
+          <div className={style.inputsRowTwoContainer}>
+            <div className={style.paymentAliasInputContainer} disabled>
+              <label className={style.paymentAliasInputLabel}>Alias para el pago:</label>
+              <div className={style.inputAndButtonContainer}>
+                <input onChange={e => handleAliasChange(e.target.value)} className={style.paymentAliasInput} type='text' />
+                <button onClick={selectAlias} className={style.paymentAliasConfirmButton}>&#10004;</button>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className={style.summaryContainer}>
-          <span>Cancha Elegida: { selectedLocation }</span>
-          <span>Fecha Elegida: { selectedDate }</span>
-          <span><b>Alias para el pago:</b> Algun Alias</span>
+          <span><b>Cancha Elegida:</b> { selectedLocation }</span>
+          <span><b>Fecha Elegida:</b> { selectedDate }</span>
+          <span><b>Alias para el pago:</b> { selectedAlias }</span>
         </div>
       </div>
     </div>
