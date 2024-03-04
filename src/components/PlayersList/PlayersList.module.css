@@ -68,6 +68,18 @@
 .playerConfirmButton:active {
   background: darkgreen;
 }
+.playersLengthContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 80%;
+  padding-left: 10px;
+}
+.playersLength {
+  text-align: center;
+  font-size: 15px;
+}
 
 .listHeader {
   display: flex;
@@ -77,6 +89,27 @@
   height: 10%;
   background: skyblue;
   font-weight: bold;
+}
+.listNameHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+  padding-left: 10px;
+}
+.listPaymentHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+}
+.listVoucherHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 25%;
+  padding-right: 10px;
 }
 
 .playersListContainer {
@@ -112,5 +145,6 @@
   justify-content: flex-end;
   align-items: center;
   width: 25%;
+  text-align: right;
   padding-right: 10px;
 }

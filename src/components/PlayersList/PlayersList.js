@@ -3,13 +3,22 @@ import style from './PlayersList.module.css';
 import axios from 'axios';
 
 function PlayersList() {
+  const [newPlayer, setNewPlayer] = useState('');
   const [allPlayers, setAllPlayers] = useState(null);
+  const [currentMatchId, setCurrentMatchId] = useState(null);
 
   const getAllPlayers = async () => {
     const response = await axios.get('http://localhost:3001/matches');
-    const currentPlayers = response.data[response.data.length - 1].players;
-    console.log('CURRENT PLAYERS', currentPlayers);
-    setAllPlayers(currentPlayers);
+    const currentMatchPlayers = response.data[response.data.length - 1].players;
+    const currentMatchId = response.data[response.data.length - 1]._id;
+    setAllPlayers(currentMatchPlayers);
+    setCurrentMatchId(currentMatchId);
+  }
+
+  const addPlayerToList = async (matchId) => {
+    const response = await axios.post(`http://localhost:3001/matches/${matchId}`, {});
+    const updatedMatch = response.data;
+    console.log('DATA', updatedMatch);
   }
 
   useEffect(() => {
@@ -27,14 +36,17 @@ function PlayersList() {
           <label className={style.playerInputLabel}>Agregar jugador:</label>
           <div className={style.inputAndButtonContainer}>
             <input className={style.playerInput} type='text' />
-            <button className={style.playerConfirmButton}>&#10004;</button>
+            <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton}>&#10004;</button>
+            <div className={style.playersLengthContainer}>
+              <span className={style.playersLength}><b>{allPlayers?.length}</b>/20 agregados</span>
+            </div>
           </div>
         </div>
 
         <div className={style.listHeader}>
-          <div className={style.listHeaderColumn}>Nombre</div>
-          <div className={style.listHeaderColumn}>Pagó?</div>
-          <div className={style.listHeaderColumn}>Comprobante</div>
+          <div className={style.listNameHeader}>Nombre</div>
+          <div className={style.listPaymentHeader}>Pagó?</div>
+          <div className={style.listVoucherHeader}>Comprobante</div>
         </div>
 
         <div className={style.playersListContainer}>
@@ -43,7 +55,7 @@ function PlayersList() {
               <div key={player._id} className={style.playerRow}>
                 <div className={style.playerNameColumn}>{ player.name }</div>
                 <div className={style.playerPaymentColumn}>{ player.payment ? 'Si' : 'No' }</div>
-                <div className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar' : 'Subir' }</div>
+                <div className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar Comprobante' : 'Subir Comprobante' }</div>
               </div>
             ))
           }
