@@ -15,15 +15,19 @@ function PlayersList() {
     setCurrentMatchId(currentMatchId);
   }
 
+  const handleNewPlayerClick = (value) => {
+    setNewPlayer(value)
+  }
+
   const addPlayerToList = async (matchId) => {
-    const response = await axios.post(`http://localhost:3001/matches/${matchId}`, {});
-    const updatedMatch = response.data;
-    console.log('DATA', updatedMatch);
+    return await axios.post(`http://localhost:3001/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null }).then(() => {
+      setNewPlayer('');
+    });
   }
 
   useEffect(() => {
     getAllPlayers();
-  }, [])
+  }, [allPlayers])
 
   return (
     <div className={style.playersListComponent}>
@@ -35,7 +39,7 @@ function PlayersList() {
         <div className={style.playerInputContainer}>
           <label className={style.playerInputLabel}>Agregar jugador:</label>
           <div className={style.inputAndButtonContainer}>
-            <input className={style.playerInput} type='text' />
+            <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
             <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton}>&#10004;</button>
             <div className={style.playersLengthContainer}>
               <span className={style.playersLength}><b>{allPlayers?.length}</b>/20 agregados</span>

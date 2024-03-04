@@ -115,6 +115,7 @@
 .playersListContainer {
   width: 100%;
   height: 75%;
+  overflow: scroll;
 }
 .playerRow {
   display: flex;
