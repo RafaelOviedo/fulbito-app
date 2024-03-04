@@ -103,12 +103,22 @@
   justify-content: flex-start;
   align-items: center;
   width: 25%;
+  height: 100%;
 }
 .listVoucherHeader {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+  padding-right: 10px;
+}
+.listActionHeader {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   width: 25%;
+  height: 100%;
   padding-right: 10px;
 }
 
@@ -143,9 +153,33 @@
 }
 .playerVoucherColumn {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   width: 25%;
   text-align: right;
   padding-right: 10px;
+  text-decoration: underline;
+  color: blue;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.playerVoucherColumn:active {
+  color: red;
+}
+.playerActionColumn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+  padding-right: 10px;
+}
+.deletePlayerButton {
+  width: 35%;
+  height: 40%;
+  background: #FF5757;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
 }

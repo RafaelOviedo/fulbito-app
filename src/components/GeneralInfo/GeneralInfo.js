@@ -70,13 +70,13 @@ function GeneralInfo() {
               <select onChange={e => selectLocation(e.target.value)} className={style.locationSelect}>
                 <option value="">Elegi una sede</option>
                 <option value="El Predio - Arregui 2485">El Predio - Arregui 2540</option>
-                <option value="El Poli - Other Address">El Poli</option>
+                <option value="El Poli">El Poli</option>
                 <option value="Futbol Comu">Futbol Comu</option>
               </select>
             </div>
 
             <div className={style.dateInputContainer} disabled>
-              <label className={style.dateInputLabel}>Dia del partido:</label>
+              <label className={style.dateInputLabel}>Día del partido:</label>
               <DatePicker onChange={selectDate} slotProps={{ textField: { size: 'small' } }} />
             </div>
           </div>

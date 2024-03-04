@@ -51,6 +51,7 @@ function PlayersList() {
           <div className={style.listNameHeader}>Nombre</div>
           <div className={style.listPaymentHeader}>Pagó?</div>
           <div className={style.listVoucherHeader}>Comprobante</div>
+          <div className={style.listActionHeader}>Acción</div>
         </div>
 
         <div className={style.playersListContainer}>
@@ -58,8 +59,11 @@ function PlayersList() {
             allPlayers && allPlayers.map((player) => (
               <div key={player._id} className={style.playerRow}>
                 <div className={style.playerNameColumn}>{ player.name }</div>
-                <div className={style.playerPaymentColumn}>{ player.payment ? 'Si' : 'No' }</div>
-                <div className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar Comprobante' : 'Subir Comprobante' }</div>
+                <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí' : 'No' }</div>
+                <button className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar' : 'Subir' }</button>
+                <div className={style.playerActionColumn}>
+                  <button className={style.deletePlayerButton}>x</button>
+                </div>
               </div>
             ))
           }
