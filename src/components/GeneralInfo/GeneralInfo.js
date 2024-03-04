@@ -54,7 +54,7 @@ function GeneralInfo() {
             <div className={style.paymentAliasInputContainer} disabled>
               <label className={style.paymentAliasInputLabel}>Alias para el pago:</label>
               <div className={style.inputAndButtonContainer}>
-                <input onChange={e => handleAliasChange(e.target.value)} className={style.paymentAliasInput} type='text' />
+                <input onChange={e => handleAliasChange(e.target.value)} className={style.paymentAliasInput} value={aliasValue} type='text' />
                 <button onClick={selectAlias} className={style.paymentAliasConfirmButton}>&#10004;</button>
               </div>
             </div>
