@@ -1,5 +1,6 @@
-import style from './GeneralInfo.module.css'
-import { useState } from 'react';
+import axios from 'axios';
+import style from './GeneralInfo.module.css';
+import { useEffect, useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function GeneralInfo() {
@@ -11,19 +12,49 @@ function GeneralInfo() {
   const selectLocation = (value) => {
     setSelectedLocation(value);
   }
+
   const selectDate = (value) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = value.$d.toLocaleDateString(undefined, options);
 
     setSelectedDate(formattedDate);
   }
+
   const handleAliasChange = (value) => {
     setAliasValue(value);
   }
+
   const selectAlias = () => {
     setSelectedAlias(aliasValue);
     setAliasValue('');
   }
+
+  const getCurrentMatch = async () => {
+    const response = await axios.get('http://localhost:3001/matches');
+    const currentMatch = response.data[response.data.length - 1];
+    setSelectedLocation(currentMatch?.location);
+    setSelectedDate(currentMatch?.date);
+    setSelectedAlias(currentMatch?.alias);
+  }
+
+  const saveGeneralInfo = async () => {
+    const generalInfoData = {
+      location: selectedLocation,
+      date: selectedDate,
+      alias: selectedAlias,
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/matches', generalInfoData);
+      return response;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  useEffect(() => {
+    getCurrentMatch();
+  }, [])
 
   return (
     <div className={style.generalInfoComponent}>
@@ -46,7 +77,7 @@ function GeneralInfo() {
 
             <div className={style.dateInputContainer} disabled>
               <label className={style.dateInputLabel}>Dia del partido:</label>
-              <DatePicker onChange={selectDate} value={selectedDate} slotProps={{ textField: { size: 'small' } }} />
+              <DatePicker onChange={selectDate} slotProps={{ textField: { size: 'small' } }} />
             </div>
           </div>
 
@@ -59,6 +90,10 @@ function GeneralInfo() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className={style.saveGeneralInfoButtonContainer}>
+          <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5 } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>Guardar Informacion General</button>
         </div>
 
         <div className={style.summaryContainer}>
