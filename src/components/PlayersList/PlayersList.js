@@ -1,6 +1,21 @@
-import style from './PlayersList.module.css'
+import { useEffect, useState } from 'react';
+import style from './PlayersList.module.css';
+import axios from 'axios';
 
 function PlayersList() {
+  const [allPlayers, setAllPlayers] = useState(null);
+
+  const getAllPlayers = async () => {
+    const response = await axios.get('http://localhost:3001/matches');
+    const currentPlayers = response.data[response.data.length - 1].players;
+    console.log('CURRENT PLAYERS', currentPlayers);
+    setAllPlayers(currentPlayers);
+  }
+
+  useEffect(() => {
+    getAllPlayers();
+  }, [])
+
   return (
     <div className={style.playersListComponent}>
       <div className={style.listTitleContainer}>
@@ -23,11 +38,15 @@ function PlayersList() {
         </div>
 
         <div className={style.playersListContainer}>
-          <div className={style.playerRow}>
-            <div className={style.playerColumn}>Jugador 1</div>
-            <div className={style.playerColumn}>No</div>
-            <div className={style.playerColumn}>Agregar comprobante</div>
-          </div>
+          {
+            allPlayers && allPlayers.map((player) => (
+              <div key={player._id} className={style.playerRow}>
+                <div className={style.playerNameColumn}>{ player.name }</div>
+                <div className={style.playerPaymentColumn}>{ player.payment ? 'Si' : 'No' }</div>
+                <div className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar' : 'Subir' }</div>
+              </div>
+            ))
+          }
         </div>
       </div>
     </div>

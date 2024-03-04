@@ -5,6 +5,7 @@
   width: 100%;
   height: 60%;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .listTitleContainer {
@@ -81,7 +82,6 @@
 .playersListContainer {
   width: 100%;
   height: 75%;
-  /* border: 1px solid blue; */
 }
 .playerRow {
   display: flex;
@@ -89,6 +89,28 @@
   align-items: center;
   width: 100%;
   height: 15%;
+}
+.playerRow:nth-child(even) {
   background: lightgray;
-  /* border: 1px solid red; */
+}
+.playerNameColumn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+  height: 100%;
+  padding-left: 10px;
+}
+.playerPaymentColumn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+}
+.playerVoucherColumn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 25%;
+  padding-right: 10px;
 }
