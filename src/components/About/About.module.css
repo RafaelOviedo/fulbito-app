@@ -42,8 +42,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 65%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   background: white;
 }
 
@@ -55,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 65%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   background: white;
 }
