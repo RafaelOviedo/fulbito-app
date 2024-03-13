@@ -7,9 +7,8 @@ function PlayersList() {
   const [allPlayers, setAllPlayers] = useState(null);
   const [currentMatchId, setCurrentMatchId] = useState(null);
 
-  // FIX INFINITE LOOP WHEN SETTING allPlayers
   const getAllPlayers = async () => {
-    const response = await axios.get('http://localhost:3001/matches');
+    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
     const currentMatchPlayers = response.data[response.data.length - 1].players;
     const currentMatchId = response.data[response.data.length - 1]._id;
     setAllPlayers(currentMatchPlayers);
@@ -21,18 +20,21 @@ function PlayersList() {
   }
 
   const addPlayerToList = async (matchId) => {
-    return await axios.post(`http://localhost:3001/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null }).then(() => {
+    return await axios.post(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null }).then(() => {
       setNewPlayer('');
+      getAllPlayers();
     });
   }
 
   const deleteMatchPlayer = async (matchId, playerId) => {
-    return await axios.delete(`http://localhost:3001/matches/${matchId}/player/${playerId}`);
+    return await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}/player/${playerId}`).then(() => {
+      getAllPlayers();
+    });
   }
 
   useEffect(() => {
-    // getAllPlayers();
-  }, [allPlayers])
+    getAllPlayers();
+  }, [])
 
   return (
     <div className={style.playersListComponent} style={ allPlayers?.length === 20 ? { cursor: 'not-allowed', opacity: 0.5 } : {} }>

@@ -30,7 +30,7 @@ function GeneralInfo() {
   }
 
   const getCurrentMatch = async () => {
-    const response = await axios.get('http://localhost:3001/matches');
+    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
     const currentMatch = response.data[response.data.length - 1];
     setSelectedLocation(currentMatch?.location);
     setSelectedDate(currentMatch?.date);
@@ -45,7 +45,7 @@ function GeneralInfo() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/matches', generalInfoData);
+      const response = await axios.post(`${process.env.REACT_APP_PROD_API}/matches`, generalInfoData);
       return response;
     } catch (error) {
       throw new Error(error);
