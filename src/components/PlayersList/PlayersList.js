@@ -7,6 +7,7 @@ function PlayersList() {
   const [allPlayers, setAllPlayers] = useState(null);
   const [currentMatchId, setCurrentMatchId] = useState(null);
 
+  // FIX INFINITE LOOP WHEN SETTING allPlayers
   const getAllPlayers = async () => {
     const response = await axios.get('http://localhost:3001/matches');
     const currentMatchPlayers = response.data[response.data.length - 1].players;
@@ -25,12 +26,16 @@ function PlayersList() {
     });
   }
 
+  const deleteMatchPlayer = async (matchId, playerId) => {
+    return await axios.delete(`http://localhost:3001/matches/${matchId}/player/${playerId}`);
+  }
+
   useEffect(() => {
-    getAllPlayers();
+    // getAllPlayers();
   }, [allPlayers])
 
   return (
-    <div className={style.playersListComponent}>
+    <div className={style.playersListComponent} style={ allPlayers?.length === 20 ? { cursor: 'not-allowed', opacity: 0.5 } : {} }>
       <div className={style.listTitleContainer}>
         <h3>Lista</h3>
       </div>
@@ -62,7 +67,7 @@ function PlayersList() {
                 <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí' : 'No' }</div>
                 <button className={style.playerVoucherColumn}>{ player.voucher ? 'Mostrar' : 'Subir' }</button>
                 <div className={style.playerActionColumn}>
-                  <button className={style.deletePlayerButton}>x</button>
+                  <button onClick={() => deleteMatchPlayer(currentMatchId, player._id)} className={style.deletePlayerButton} disabled={allPlayers?.length === 20}>x</button>
                 </div>
               </div>
             ))
