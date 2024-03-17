@@ -132,7 +132,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 15%;
+  height: auto;
+  min-height: 15%;
 }
 .playerRow:nth-child(even) {
   background: lightgray;
@@ -144,19 +145,21 @@
   width: 25%;
   height: 100%;
   padding-left: 10px;
+  word-break: break-word;
 }
 .playerPaymentColumn {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 25%;
+  padding-left: 10px;
 }
 .playerVoucherColumn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20%;
-  height: 40%;
+  width: 25%;
+  height: 30px;
   text-align: right;
   padding-right: 10px;
   font-size: 14px;
@@ -180,7 +183,7 @@
 }
 .deletePlayerButton {
   width: 35%;
-  height: 40%;
+  height: 25px;
   background: #FF5757;
   color: #fff;
   border: none;
@@ -188,4 +191,87 @@
 }
 .deletePlayerButton:active {
   background: red;
+}
+.uploadShowPhotoModal {
+  position: fixed;
+  top: 15vh;
+  left: 5%;
+  width: 90%;
+  height: 65%;
+  background: #fff;
+  border-radius: 5px;
+  border: 2px solid #000;
+}
+.closeModalButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+}
+.closeModalButton {
+  width: 30px;
+  height: 25px;
+  background: #FF5757;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.closeModalButton:active {
+  background: red;
+}
+.modalContentContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+}
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+}
+.uploadVoucherInput {
+  width: 55%;
+  height: 10%;
+}
+.uploadVoucherInput::file-selector-button {
+  font-weight: bold;
+  background: lightseagreen;
+  padding: 0.5em;
+  border: thin solid grey;
+  border-radius: 5px;
+  border: none;
+}
+.uploadButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 10%;
+  background: lightseagreen;
+  border-radius: 5px;
+  font-weight: bold;
+  border: none;
+}
+.uploadButton:active {
+  background: lightblue;
+}
+
+.voucherImageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.voucherImage {
+  width: 75%;
+  height: 80%;
 }
