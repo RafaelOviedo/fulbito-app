@@ -1,6 +1,6 @@
 import axios from 'axios';
 import style from './GeneralInfo.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function GeneralInfo() {
@@ -8,6 +8,7 @@ function GeneralInfo() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [aliasValue, setAliasValue] = useState('');
   const [selectedAlias, setSelectedAlias] = useState('');
+  const [isDataStored, setIsDataStored] = useState(false);
 
   const selectLocation = (value) => {
     setSelectedLocation(value);
@@ -26,16 +27,19 @@ function GeneralInfo() {
 
   const selectAlias = () => {
     setSelectedAlias(aliasValue);
-    setAliasValue('');
   }
 
-  const getCurrentMatch = async () => {
+  const getCurrentMatch = useCallback(async () => {
     const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
     const currentMatch = response.data[response.data.length - 1];
     setSelectedLocation(currentMatch?.location);
     setSelectedDate(currentMatch?.date);
     setSelectedAlias(currentMatch?.alias);
-  }
+
+    if(currentMatch?.location && currentMatch?.date && currentMatch?.alias) {
+      setIsDataStored(true);
+    }
+  }, [])
 
   const saveGeneralInfo = async () => {
     const generalInfoData = {
@@ -46,6 +50,7 @@ function GeneralInfo() {
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_PROD_API}/matches`, generalInfoData);
+      setIsDataStored(true);
       return response;
     } catch (error) {
       throw new Error(error);
@@ -54,16 +59,16 @@ function GeneralInfo() {
 
   useEffect(() => {
     getCurrentMatch();
-  }, [])
+  }, [getCurrentMatch])
 
   return (
-    <div className={style.generalInfoComponent}>
+    <div className={style.generalInfoComponent} style={ isDataStored ? { height: '20%' } : { height: '30%' }}>
       <div className={style.generalInfoTitleContainer}>
         <h3>Informacion General</h3>
       </div>
 
       <div className={style.generalInfoContainer}>
-        <div className={style.inputsContainer}>
+        <div className={style.inputsContainer} style={ isDataStored ? { display: 'none' } : { height: '100%' }}>
           <div className={style.inputsRowOneContainer}>
             <div className={style.locationInputContainer}>
               <label className={style.locationInputLabel}>Lugar del partido:</label>
@@ -85,18 +90,18 @@ function GeneralInfo() {
             <div className={style.paymentAliasInputContainer} disabled>
               <label className={style.paymentAliasInputLabel}>Alias para el pago:</label>
               <div className={style.inputAndButtonContainer}>
-                <input onChange={e => handleAliasChange(e.target.value)} className={style.paymentAliasInput} value={aliasValue} type='text' />
-                <button onClick={selectAlias} className={style.paymentAliasConfirmButton}>&#10004;</button>
+                <input onChange={e => handleAliasChange(e.target.value)} onBlur={selectAlias} className={style.paymentAliasInput} value={aliasValue} type='text' />
               </div>
             </div>
           </div>
+
+          <div className={style.saveGeneralInfoButtonContainer}>
+            <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5, pointerEvents: 'none' } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>Guardar Informacion General</button>
+          </div>
         </div>
 
-        <div className={style.saveGeneralInfoButtonContainer}>
-          <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5 } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>Guardar Informacion General</button>
-        </div>
 
-        <div className={style.summaryContainer}>
+        <div className={style.summaryContainer} style={ !isDataStored ? { display: 'none' } : { height: '100%' }}>
           <span><b>Cancha Elegida:</b> { selectedLocation }</span>
           <span><b>Fecha Elegida:</b> { selectedDate }</span>
           <span><b>Alias para el pago:</b> { selectedAlias }</span>
