@@ -15,8 +15,8 @@ function PlayersList() {
 
   const getAllPlayers = async () => {
     const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
-    const currentMatchPlayers = response.data[response.data.length - 1].players;
-    const currentMatchId = response.data[response.data.length - 1]._id;
+    const currentMatchPlayers = response.data[response.data.length - 1]?.players;
+    const currentMatchId = response.data[response.data.length - 1]?._id;
     setAllPlayers(currentMatchPlayers);
     setCurrentMatchId(currentMatchId);
   }
@@ -51,7 +51,7 @@ function PlayersList() {
   };
 
   const showToast = () => {
-    toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+    toast.current.show({ severity: 'info', summary: 'Success', detail: 'Comprobante Subido' });
   };
 
   const uploadPlayerPhoto = async (e) => {
@@ -63,6 +63,7 @@ function PlayersList() {
     await axios.patch(`${process.env.REACT_APP_PROD_API}/matches/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
     showToast();
     getAllPlayers();
+    setIsModalOpen(false);
   }
 
   function getVoucherImage(bufferData) {
@@ -76,16 +77,18 @@ function PlayersList() {
 
   return (
     <div className={style.playersListComponent} style={ allPlayers?.length === 20 ? { cursor: 'not-allowed', opacity: 0.5 } : {} }>
+      <Toast ref={toast} />
       <div className={style.listTitleContainer}>
         <h3>Lista</h3>
       </div>
+
 
       <div className={style.listContainer}>
         <div className={style.playerInputContainer}>
           <label className={style.playerInputLabel}>Agregar jugador:</label>
           <div className={style.inputAndButtonContainer}>
             <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
-            <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton}>&#10004;</button>
+            <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton} disabled={!newPlayer.length} style={!newPlayer.length ? { opacity: 0.5 } : {}}>&#10004;</button>
             <div className={style.playersLengthContainer}>
               <span className={style.playersLength}><b>{allPlayers?.length}</b>/20 agregados</span>
             </div>
@@ -101,7 +104,7 @@ function PlayersList() {
 
         <div className={style.playersListContainer} style={ allPlayers?.length === 20 ? { opacity: '0.5', background: 'lightgrey'} : {} }>
           {
-            allPlayers && allPlayers.map((player) => (
+            allPlayers && allPlayers?.map((player) => (
               <div key={player._id} className={style.playerRow}>
                 <div className={style.playerNameColumn}>{ player.name }</div>
                 <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
@@ -126,8 +129,6 @@ function PlayersList() {
               </div>
               
               <div className={style.modalContentContainer}>
-                <Toast ref={toast} />
-
                 { !player.payment ?
                   <form onSubmit={uploadPlayerPhoto} className={style.formContainer}>
                     <input id='image' type="file" onChange={handleImageChange} name='image' accept='image/*' className={style.uploadVoucherInput} placeholder='hehfjeh' />

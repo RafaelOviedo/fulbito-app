@@ -4,7 +4,7 @@ function About() {
   return (
     <div className={style.aboutComponent}>
       <div className={style.textContainer}>
-        <p>Esta applicacion fue creada para organizar de mejor manera las partidas de los integrantes del Maconha FC.</p>
+        <p>Esta applicacion fue creada para organizar de mejor manera las partidas con los pibes del futbol.</p>
       </div>
 
       <div className={style.socialMediaContainer}>
