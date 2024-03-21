@@ -14,3 +14,19 @@
   font-weight: bold;
   background: skyblue;
 }
+
+.createNewMatchButton {
+  width: 90%;
+  height: 35px;
+  border: none;
+  color: #fff;
+  background: green;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.createNewMatchButton:active {
+  background: darkgreen;
+}
