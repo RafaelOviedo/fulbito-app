@@ -80,25 +80,30 @@ function PlayersList() {
     setIsModalOpen(false);
   }
 
-  function getVoucherImage(bufferData) {
+  const getVoucherImage = (bufferData) => {
     const blob = new Blob([new Uint8Array(bufferData)], { type: 'image/jpeg' });
     return URL.createObjectURL(blob);
   }
 
+  const checkListIsClosed = () => {
+    return allPlayers?.every((player) => player.payment === true);
+  }
+
   useEffect(() => {
     getAllPlayers();
+    // checkListIsClosed();
   }, [])
 
   return (
-    <div className={style.playersListComponent} style={ allPlayers?.length === 20 ? { cursor: 'not-allowed', opacity: 0.5 } : {} }>
+    <div className={style.playersListComponent}>
       <Toast ref={toast} />
 
       <div className={style.listTitleContainer}>
-        <h3>Lista</h3>
+        <h3>{ allPlayers?.length === 3 && checkListIsClosed ? 'Lista Cerrada' : 'Lista' }</h3>
       </div>
 
       <div className={style.listContainer}>
-        <div className={style.playerInputContainer}>
+        <div className={style.playerInputContainer} style={ allPlayers?.length === 3 && checkListIsClosed ? { pointerEvents: 'none', opacity: 0.5 } : {} }>
           <label className={style.playerInputLabel}>Agregar jugador:</label>
           <div className={style.inputAndButtonContainer}>
             <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
