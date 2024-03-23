@@ -104,3 +104,9 @@
   font-size: 14px;
   background: lightseagreen;
 }
+
+@media screen and (width > 768px) {
+  .createNewMatchButton {
+    width: 45%;
+  }
+}

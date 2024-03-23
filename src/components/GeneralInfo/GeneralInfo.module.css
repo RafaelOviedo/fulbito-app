@@ -137,3 +137,9 @@
 .saveGeneralInfoButton:active {
   background: darkgreen;
 }
+
+@media screen and (width > 768px) {
+  .generalInfoComponent {
+    width: 50%;
+  }
+}

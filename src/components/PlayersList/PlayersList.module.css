@@ -301,3 +301,9 @@
 .p-toast .p-toast-message.p-toast-message-success {
   width: 90%;
 }
+
+@media screen and (width > 768px) {
+  .playersListComponent {
+    width: 50%;
+  }
+}

@@ -59,3 +59,9 @@
   height: 100px;
   background: white;
 }
+
+@media screen and (width > 768px) {
+  .iconsContainer {
+    width: 60%;
+  }
+}
