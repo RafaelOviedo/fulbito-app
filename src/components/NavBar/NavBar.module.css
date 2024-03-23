@@ -18,3 +18,10 @@
   font-weight: bold;
   color: #000;
 }
+
+@media screen and (width > 768px) {
+  .navContainer {
+    padding-left: 250px;
+    padding-right: 250px;
+  }
+}
