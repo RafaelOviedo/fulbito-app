@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import style from './PlayersList.module.css';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 function PlayersList() {
   const [newPlayer, setNewPlayer] = useState('');
@@ -11,6 +12,8 @@ function PlayersList() {
   const [player, setPlayer] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const toast = useRef(null);
 
   const getAllPlayers = async () => {
@@ -19,6 +22,7 @@ function PlayersList() {
     const currentMatchId = response.data[response.data.length - 1]?._id;
     setAllPlayers(currentMatchPlayers);
     setCurrentMatchId(currentMatchId);
+    setIsLoading(false);
   }
 
   const handleNewPlayerClick = (value) => {
@@ -26,12 +30,22 @@ function PlayersList() {
   }
 
   const addPlayerToList = async (matchId) => {
-    await axios.post(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null });
-    setNewPlayer('');
-    getAllPlayers();
+    setIsLoading(true);
+
+    try {
+      await axios.post(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null });
+      setNewPlayer('');
+      getAllPlayers();
+    } 
+    catch (error) {
+      setShowErrorMessage(true);
+      setIsLoading(false);
+      throw new Error(error);  
+    }
   }
 
   const deleteMatchPlayer = async (matchId, playerId) => {
+    setIsLoading(true);
     await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}/player/${playerId}`);
     getAllPlayers();
   }
@@ -78,10 +92,10 @@ function PlayersList() {
   return (
     <div className={style.playersListComponent} style={ allPlayers?.length === 20 ? { cursor: 'not-allowed', opacity: 0.5 } : {} }>
       <Toast ref={toast} />
+
       <div className={style.listTitleContainer}>
         <h3>Lista</h3>
       </div>
-
 
       <div className={style.listContainer}>
         <div className={style.playerInputContainer}>
@@ -95,6 +109,8 @@ function PlayersList() {
           </div>
         </div>
 
+        { showErrorMessage ? <div className={style.noSelectedPlayersError}>No puedes agregar jugadores sin tener una partida seleccionada</div> : '' }
+
         <div className={style.listHeader}>
           <div className={style.listNameHeader}>Nombre</div>
           <div className={style.listPaymentHeader}>Pagó?</div>
@@ -102,24 +118,33 @@ function PlayersList() {
           <div className={style.listActionHeader}>Acción</div>
         </div>
 
-        <div className={style.playersListContainer} style={ allPlayers?.length === 20 ? { opacity: '0.5', background: 'lightgrey'} : {} }>
-          {
-            allPlayers && allPlayers?.map((player) => (
-              <div key={player._id} className={style.playerRow}>
-                <div className={style.playerNameColumn}>{ player.name }</div>
-                <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
-                <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Mostrar' : 'Subir' }</button>
-                <div className={style.playerActionColumn}>
-                  <button 
-                    onClick={() => deleteMatchPlayer(currentMatchId, player._id)} 
-                    className={style.deletePlayerButton} 
-                    disabled={player.payment} 
-                    style={ player.payment ? { opacity: 0.5 } : {} }>x</button>
-                </div>
-              </div>
-            ))
-          }
-        </div>
+        {
+          isLoading ? (
+            <ProgressSpinner style={{width: '50px', height: '50px', marginTop: '10px'}} strokeWidth="4" />
+          ) : (
+            <div className={style.playersListContainer} style={ allPlayers?.length === 20 ? { opacity: '0.5', background: 'lightgrey'} : {} }>
+              {
+                !allPlayers?.length ? (
+                  <div className={style.noPlayersDisplayed}>No se han agregado jugadores aun</div>
+                ) :
+                allPlayers && allPlayers?.map((player) => (
+                  <div key={player._id} className={style.playerRow}>
+                    <div className={style.playerNameColumn}>{ player.name }</div>
+                    <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
+                    <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Mostrar' : 'Subir' }</button>
+                    <div className={style.playerActionColumn}>
+                      <button 
+                        onClick={() => deleteMatchPlayer(currentMatchId, player._id)} 
+                        className={style.deletePlayerButton} 
+                        disabled={player.payment} 
+                        style={ player.payment ? { opacity: 0.5 } : {} }>x</button>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          )
+        }
 
         {
           isModalOpen ?

@@ -40,6 +40,12 @@
   width: 95%;
   height: 15%;
 }
+.noSelectedPlayersError {
+  width: 95%; 
+  font-size: 15px; 
+  color: red; 
+  margin-bottom: 10px;
+}
 .playerInputLabel {
   font-size: 14px;
 }
@@ -126,6 +132,13 @@
   width: 100%;
   height: 75%;
   overflow: scroll;
+}
+.noPlayersDisplayed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
 }
 .playerRow {
   display: flex;
