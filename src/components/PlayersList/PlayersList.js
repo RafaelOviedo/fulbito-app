@@ -3,8 +3,11 @@ import style from './PlayersList.module.css';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import 'primereact/resources/themes/saga-blue/theme.css';
 
 function PlayersList() {
+  const MAX_LIST_PLAYERS = 20;
+
   const [newPlayer, setNewPlayer] = useState('');
   const [allPlayers, setAllPlayers] = useState(null);
   const [currentMatchId, setCurrentMatchId] = useState(null);
@@ -13,6 +16,7 @@ function PlayersList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingVoucherUpload, setIsLoadingVoucherUpload] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const toast = useRef(null);
 
@@ -60,16 +64,16 @@ function PlayersList() {
   }
 
   const handleImageChange = (e) => {
-    console.log(e.target.files[0]);
     setImage(e.target.files[0]);
   };
 
   const showToast = () => {
-    toast.current.show({ severity: 'info', summary: 'Success', detail: 'Comprobante Subido' });
+    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comprobante subido!', life: 5000 });
   };
 
   const uploadPlayerPhoto = async (e) => {
     e.preventDefault();
+    setIsLoadingVoucherUpload(true);
 
     const formData = new FormData();
     formData.append('image', image);
@@ -78,6 +82,7 @@ function PlayersList() {
     showToast();
     getAllPlayers();
     setIsModalOpen(false);
+    setIsLoadingVoucherUpload(false);
   }
 
   const getVoucherImage = (bufferData) => {
@@ -85,25 +90,24 @@ function PlayersList() {
     return URL.createObjectURL(blob);
   }
 
-  const checkListIsClosed = () => {
+  const allPlayersHavePaid = () => {
     return allPlayers?.every((player) => player.payment === true);
   }
 
   useEffect(() => {
     getAllPlayers();
-    // checkListIsClosed();
   }, [])
 
   return (
     <div className={style.playersListComponent}>
-      <Toast ref={toast} />
+      <Toast ref={toast} position="top-center" />
 
       <div className={style.listTitleContainer}>
-        <h3>{ allPlayers?.length === 3 && checkListIsClosed ? 'Lista Cerrada' : 'Lista' }</h3>
+        <h3>{ allPlayers?.length === MAX_LIST_PLAYERS && allPlayersHavePaid() ? <span style={{ color: 'red' }}>Lista Cerrada</span> : 'Lista' }</h3>
       </div>
 
       <div className={style.listContainer}>
-        <div className={style.playerInputContainer} style={ allPlayers?.length === 3 && checkListIsClosed ? { pointerEvents: 'none', opacity: 0.5 } : {} }>
+        <div className={style.playerInputContainer} style={ allPlayers?.length === MAX_LIST_PLAYERS ? { pointerEvents: 'none', opacity: 0.5 } : {} }>
           <label className={style.playerInputLabel}>Agregar jugador:</label>
           <div className={style.inputAndButtonContainer}>
             <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
@@ -127,7 +131,7 @@ function PlayersList() {
           isLoading ? (
             <ProgressSpinner style={{width: '50px', height: '50px', marginTop: '10px'}} strokeWidth="4" />
           ) : (
-            <div className={style.playersListContainer} style={ allPlayers?.length === 20 ? { opacity: '0.5', background: 'lightgrey'} : {} }>
+            <div className={style.playersListContainer}>
               {
                 !allPlayers?.length ? (
                   <div className={style.noPlayersDisplayed}>No se han agregado jugadores aun</div>
@@ -160,10 +164,14 @@ function PlayersList() {
               
               <div className={style.modalContentContainer}>
                 { !player.payment ?
-                  <form onSubmit={uploadPlayerPhoto} className={style.formContainer}>
-                    <input id='image' type="file" onChange={handleImageChange} name='image' accept='image/*' className={style.uploadVoucherInput} placeholder='hehfjeh' />
-                    <button type='submit' className={style.uploadButton}>Subir Comprobante</button>
-                  </form> 
+                  <div className={style.voucherUploadContainer}>
+                    <p style={{ textAlign: 'center' }}>Sube el comprobante del pago <br /> de la partida</p>
+
+                    <form onSubmit={uploadPlayerPhoto} className={style.formContainer}>
+                      <input id='image' type="file" onChange={handleImageChange} name='image' accept='image/*' className={style.uploadVoucherInput} placeholder='hehfjeh' />
+                      <button type='submit' className={style.uploadButton} disabled={!image}>{ isLoadingVoucherUpload ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Subir Comprobante' }</button>
+                    </form> 
+                  </div>
                   :
                   <div className={style.voucherImageContainer}>
                     <span>Comprobante de { player.name }</span>
