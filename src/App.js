@@ -5,12 +5,14 @@ import About from './components/About/About';
 import style from './App.module.css'
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 function App() {
   const route = useLocation();
   const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(false);
   const [currentMatchId, setCurrentMatchId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const changeGeneralInfo = (data) => {
     setIsGeneralInfoChanged(data);
@@ -30,9 +32,12 @@ function App() {
   const createNewMatch = useCallback(async (matchId) => {
     if(!matchId) { return; };
 
+    setIsLoading(true);
+
     try {
       await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`);
       setCurrentMatchId(currentMatchId);
+      setIsLoading(false);
       closeModal();
     } 
     catch (error) {
@@ -83,7 +88,7 @@ function App() {
 
               <div className={style.modalButtonsContainer}>
                 <button className={style.cancelModalButton} onClick={closeModal}>Cancelar</button>
-                <button className={style.createMatchModalButton} onClick={() => createNewMatch(currentMatchId)}>Crear Partida</button>
+                <button className={style.createMatchModalButton} onClick={() => createNewMatch(currentMatchId)}>{ isLoading ? <ProgressSpinner style={{width: '30px', height: '30px'}} strokeWidth="4" /> : 'Crear Partida' }</button>
               </div>
             </div>
           </div>
