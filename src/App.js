@@ -12,7 +12,7 @@ function App() {
   const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(false);
   const [currentMatchId, setCurrentMatchId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const changeGeneralInfo = (data) => {
     setIsGeneralInfoChanged(data);
