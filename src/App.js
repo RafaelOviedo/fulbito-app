@@ -1,5 +1,5 @@
 import NavBar from "./components/NavBar/NavBar";
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './components/Home/Home';
 import About from './components/About/About';
 import style from './App.module.css'
@@ -7,8 +7,14 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 function App() {
+  const route = useLocation();
+  const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(false);
   const [currentMatchId, setCurrentMatchId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const changeGeneralInfo = (data) => {
+    setIsGeneralInfoChanged(data);
+  };
 
   const getCurrentMatchId = async () => {
     try {
@@ -26,11 +32,13 @@ function App() {
 
     try {
       await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`);
+      setCurrentMatchId(currentMatchId);
       closeModal();
     } 
     catch (error) {
       throw new Error(error);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const openModal = () => {
@@ -41,17 +49,22 @@ function App() {
     setIsModalOpen(false);
   }
 
+  const buttonStyle = {
+    display: route.pathname === '/about' ? 'none' : '',
+    opacity: !currentMatchId ? 0.5 : 1
+  };
+
   useEffect(() => {
     getCurrentMatchId();
-  }, [createNewMatch])
+  }, [createNewMatch, isGeneralInfoChanged])
 
   return (
     <div className={style.appContainer}>
       <NavBar />
       <div class={style.titleContainer}>Organizador para los pibes del futbol</div>
-      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={!currentMatchId ? { opacity: 0.5 } : {} }>+ Crear Nueva Partida</button>
+      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={buttonStyle}>+ Crear Nueva Partida</button>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home currentMatchId={currentMatchId} onGeneralInfoChange={changeGeneralInfo} />} />
         <Route path='/about' element={<About />} />
       </Routes>
 

@@ -2,13 +2,19 @@ import axios from 'axios';
 import style from './GeneralInfo.module.css';
 import { useEffect, useState, useCallback } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
-function GeneralInfo() {
+function GeneralInfo({ onGeneralInfoChange }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [aliasValue, setAliasValue] = useState('');
   const [selectedAlias, setSelectedAlias] = useState('');
   const [isDataStored, setIsDataStored] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGeneralInfoChange = (data) => {
+    onGeneralInfoChange(data);
+  };
 
   const selectLocation = (value) => {
     setSelectedLocation(value);
@@ -42,6 +48,8 @@ function GeneralInfo() {
   }, [])
 
   const saveGeneralInfo = async () => {
+    setIsLoading(true);
+
     const generalInfoData = {
       location: selectedLocation,
       date: selectedDate,
@@ -51,8 +59,13 @@ function GeneralInfo() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_PROD_API}/matches`, generalInfoData);
       setIsDataStored(true);
+      handleGeneralInfoChange(true);
+
+      setIsLoading(false)
+
       return response;
-    } catch (error) {
+    } 
+    catch (error) {
       throw new Error(error);
     }
   }
@@ -96,10 +109,9 @@ function GeneralInfo() {
           </div>
 
           <div className={style.saveGeneralInfoButtonContainer}>
-            <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5, pointerEvents: 'none' } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>Guardar Informacion General</button>
+            <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5, pointerEvents: 'none' } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>{ isLoading ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Guardar Informacion General'}</button>
           </div>
         </div>
-
 
         <div className={style.summaryContainer} style={ !isDataStored ? { display: 'none' } : { height: '100%' }}>
           <span><b>Cancha Elegida:</b> { selectedLocation }</span>
