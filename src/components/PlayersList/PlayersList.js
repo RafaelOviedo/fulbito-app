@@ -21,7 +21,7 @@ function PlayersList() {
   const toast = useRef(null);
 
   const getAllPlayers = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
+    const response = await axios.get(`${process.env.REACT_APP_PROD_API_FLO}/matches`);
     const currentMatchPlayers = response.data[response.data.length - 1]?.players;
     const currentMatchId = response.data[response.data.length - 1]?._id;
     setAllPlayers(currentMatchPlayers);
@@ -37,7 +37,7 @@ function PlayersList() {
     setIsLoading(true);
 
     try {
-      await axios.post(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null });
+      await axios.post(`${process.env.REACT_APP_PROD_API_FLO}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null });
       setNewPlayer('');
       getAllPlayers();
     } 
@@ -50,7 +50,7 @@ function PlayersList() {
 
   const deleteMatchPlayer = async (matchId, playerId) => {
     setIsLoading(true);
-    await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}/player/${playerId}`);
+    await axios.delete(`${process.env.REACT_APP_PROD_API_FLO}/matches/${matchId}/player/${playerId}`);
     getAllPlayers();
   }
 
@@ -78,7 +78,7 @@ function PlayersList() {
     const formData = new FormData();
     formData.append('image', image);
 
-    await axios.patch(`${process.env.REACT_APP_PROD_API}/matches/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+    await axios.patch(`${process.env.REACT_APP_PROD_API_FLO}/matches/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
     showToast();
     getAllPlayers();
     setIsModalOpen(false);

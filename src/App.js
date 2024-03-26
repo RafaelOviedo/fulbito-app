@@ -20,7 +20,7 @@ function App() {
 
   const getCurrentMatchId = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
+      const response = await axios.get(`${process.env.REACT_APP_PROD_API_FLO}/matches`);
       const currentMatchId = response.data[response.data.length - 1]?._id;
       setCurrentMatchId(currentMatchId);
     } 
@@ -35,7 +35,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`);
+      await axios.delete(`${process.env.REACT_APP_PROD_API_FLO}/matches/${matchId}`);
       setCurrentMatchId(currentMatchId);
       setIsLoading(false);
       closeModal();
