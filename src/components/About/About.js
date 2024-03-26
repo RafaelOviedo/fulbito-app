@@ -19,6 +19,10 @@ function About() {
           </a>
         </div>
       </div>
+
+      <div className={style.versionContainer}>
+        <span>Version: 1.0.0</span>
+      </div>
     </div>
   )
 }
