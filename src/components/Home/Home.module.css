@@ -5,3 +5,25 @@
   width: 100%;
   height: 1100px;
 }
+.match8Container {
+  width: 100%;
+  height: 100%;
+}
+.match5Container {
+  width: 100%;
+  height: 100%;
+}
+.toggleMatchTypeContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 90%;
+  height: 3%;
+  margin-top: 10px;
+}
+.matchTypeButton {
+  width: 40%;
+  background: none;
+  border: none;
+  font-size: 15px;
+}

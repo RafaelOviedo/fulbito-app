@@ -10,6 +10,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 function App() {
   const route = useLocation();
   const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(false);
+  const [isMatch8Type, setIsMatch8Type] = useState(true);
   const [currentMatchId, setCurrentMatchId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,16 +19,28 @@ function App() {
     setIsGeneralInfoChanged(data);
   };
 
-  const getCurrentMatchId = async () => {
+  const changeMatchType = (data) => {
+    setIsMatch8Type(data);
+  };
+
+  const matchTypeEndpoint = () => {
+    console.log('IS MATCH 8 ?', isMatch8Type);
+    return isMatch8Type ? 'matches_8' : 'matches_5';
+  };
+
+  const getCurrentMatchId = useCallback(async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
+      const response = await axios.get(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`);
       const currentMatchId = response.data[response.data.length - 1]?._id;
+      console.log('ENDPOINT TYPE', matchTypeEndpoint());
+      console.log('CURRENT MATCH ID', currentMatchId);
       setCurrentMatchId(currentMatchId);
     } 
     catch (error) {
       throw new Error(error);
     }
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const createNewMatch = useCallback(async (matchId) => {
     if(!matchId) { return; };
@@ -35,7 +48,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`);
+      await axios.delete(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}/${matchId}`);
       setCurrentMatchId(currentMatchId);
       setIsLoading(false);
       closeModal();
@@ -61,15 +74,15 @@ function App() {
 
   useEffect(() => {
     getCurrentMatchId();
-  }, [createNewMatch, isGeneralInfoChanged])
+  }, [getCurrentMatchId, createNewMatch, isGeneralInfoChanged, isMatch8Type])
 
   return (
     <div className={style.appContainer}>
       <NavBar />
       <div class={style.titleContainer}>Organizador para los pibes del futbol</div>
-      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={buttonStyle}>+ Crear Nueva Partida</button>
+      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={buttonStyle}>{ isMatch8Type ? '+ Crear Nueva Partida Fut 8' : '+ Crear Nueva Partida Fut 5' }</button>
       <Routes>
-        <Route path='/' element={<Home currentMatchId={currentMatchId} onGeneralInfoChange={changeGeneralInfo} />} />
+        <Route path='/' element={<Home currentMatchId={currentMatchId} onGeneralInfoChange={changeGeneralInfo} onMatchTypeChange={changeMatchType} matchTypeEndpoint={matchTypeEndpoint} />} />
         <Route path='/about' element={<About />} />
       </Routes>
 

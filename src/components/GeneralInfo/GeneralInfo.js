@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
-function GeneralInfo({ onGeneralInfoChange }) {
+function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [aliasValue, setAliasValue] = useState('');
@@ -39,7 +39,7 @@ function GeneralInfo({ onGeneralInfoChange }) {
   const getCurrentMatch = useCallback(async () => {
     setIsInfoLoading(true);
 
-    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
+    const response = await axios.get(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`);
     const currentMatch = response.data[response.data.length - 1];
     setSelectedLocation(currentMatch?.location);
     setSelectedDate(currentMatch?.date);
@@ -50,6 +50,7 @@ function GeneralInfo({ onGeneralInfoChange }) {
     }
 
     setIsInfoLoading(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const saveGeneralInfo = async () => {
@@ -62,7 +63,7 @@ function GeneralInfo({ onGeneralInfoChange }) {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_PROD_API}/matches`, generalInfoData);
+      const response = await axios.post(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`, generalInfoData);
       setIsDataStored(true);
       handleGeneralInfoChange(true);
 

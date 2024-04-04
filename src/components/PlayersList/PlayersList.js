@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import style from './PlayersList.module.css';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import 'primereact/resources/themes/saga-blue/theme.css';
 
-function PlayersList() {
+function PlayersList({ matchTypeEndpoint }) {
   const MAX_LIST_PLAYERS = 20;
 
   const [newPlayer, setNewPlayer] = useState('');
@@ -20,14 +20,15 @@ function PlayersList() {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const toast = useRef(null);
 
-  const getAllPlayers = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/matches`);
+  const getAllPlayers = useCallback(async () => {
+    const response = await axios.get(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`);
     const currentMatchPlayers = response.data[response.data.length - 1]?.players;
     const currentMatchId = response.data[response.data.length - 1]?._id;
     setAllPlayers(currentMatchPlayers);
     setCurrentMatchId(currentMatchId);
     setIsLoading(false);
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleNewPlayerClick = (value) => {
     setNewPlayer(value)
@@ -37,7 +38,7 @@ function PlayersList() {
     setIsLoading(true);
 
     try {
-      await axios.post(`${process.env.REACT_APP_PROD_API}/matches/${matchId}`, { name: newPlayer, payment: false, voucher: null });
+      await axios.post(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}/${matchId}`, { name: newPlayer, payment: false, voucher: null });
       setNewPlayer('');
       getAllPlayers();
     } 
@@ -50,7 +51,7 @@ function PlayersList() {
 
   const deleteMatchPlayer = async (matchId, playerId) => {
     setIsLoading(true);
-    await axios.delete(`${process.env.REACT_APP_PROD_API}/matches/${matchId}/player/${playerId}`);
+    await axios.delete(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}/${matchId}/player/${playerId}`);
     getAllPlayers();
   }
 
@@ -78,7 +79,7 @@ function PlayersList() {
     const formData = new FormData();
     formData.append('image', image);
 
-    await axios.patch(`${process.env.REACT_APP_PROD_API}/matches/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+    await axios.patch(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
     showToast();
     getAllPlayers();
     setIsModalOpen(false);
@@ -96,7 +97,7 @@ function PlayersList() {
 
   useEffect(() => {
     getAllPlayers();
-  }, [])
+  }, [getAllPlayers])
 
   return (
     <div className={style.playersListComponent}>
