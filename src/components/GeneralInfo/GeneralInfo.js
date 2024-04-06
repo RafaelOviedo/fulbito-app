@@ -39,7 +39,7 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
   const getCurrentMatch = useCallback(async () => {
     setIsInfoLoading(true);
 
-    const response = await axios.get(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`);
+    const response = await axios.get(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}`);
     const currentMatch = response.data[response.data.length - 1];
     setSelectedLocation(currentMatch?.location);
     setSelectedDate(currentMatch?.date);
@@ -63,7 +63,7 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
     }
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`, generalInfoData);
+      const response = await axios.post(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}`, generalInfoData);
       setIsDataStored(true);
       handleGeneralInfoChange(+1);
 
