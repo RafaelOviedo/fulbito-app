@@ -65,7 +65,7 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
     try {
       const response = await axios.post(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`, generalInfoData);
       setIsDataStored(true);
-      handleGeneralInfoChange(true);
+      handleGeneralInfoChange(+1);
 
       setIsLoading(false)
 

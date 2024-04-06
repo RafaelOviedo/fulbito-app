@@ -9,7 +9,7 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 
 function App() {
   const route = useLocation();
-  const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(false);
+  const [isGeneralInfoChanged, setIsGeneralInfoChanged] = useState(0);
   const [isMatch8Type, setIsMatch8Type] = useState(true);
   const [currentMatchId, setCurrentMatchId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,30 +17,28 @@ function App() {
 
   const changeGeneralInfo = (data) => {
     setIsGeneralInfoChanged(data);
+    getCurrentMatchId();
   };
 
   const changeMatchType = (data) => {
     setIsMatch8Type(data);
+    getCurrentMatchId();
   };
 
-  const matchTypeEndpoint = () => {
-    console.log('IS MATCH 8 ?', isMatch8Type);
+  const matchTypeEndpoint = useCallback(() => {
     return isMatch8Type ? 'matches_8' : 'matches_5';
-  };
+  }, [isMatch8Type]);
 
   const getCurrentMatchId = useCallback(async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}`);
       const currentMatchId = response.data[response.data.length - 1]?._id;
-      console.log('ENDPOINT TYPE', matchTypeEndpoint());
-      console.log('CURRENT MATCH ID', currentMatchId);
       setCurrentMatchId(currentMatchId);
     } 
     catch (error) {
       throw new Error(error);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [matchTypeEndpoint]);
 
   const createNewMatch = useCallback(async (matchId) => {
     if(!matchId) { return; };
@@ -50,14 +48,15 @@ function App() {
     try {
       await axios.delete(`${process.env.REACT_APP_DEV_API}/${matchTypeEndpoint()}/${matchId}`);
       setCurrentMatchId(currentMatchId);
+      getCurrentMatchId();
       setIsLoading(false);
       closeModal();
     } 
     catch (error) {
       throw new Error(error);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchTypeEndpoint])
 
   const openModal = () => {
     setIsModalOpen(true);

@@ -35,6 +35,11 @@ function PlayersList({ matchTypeEndpoint }) {
   }
 
   const addPlayerToList = async (matchId) => {
+    if (!matchId) { 
+      setShowErrorMessage(true);
+      return; 
+    };
+
     setIsLoading(true);
 
     try {
@@ -43,7 +48,6 @@ function PlayersList({ matchTypeEndpoint }) {
       getAllPlayers();
     } 
     catch (error) {
-      setShowErrorMessage(true);
       setIsLoading(false);
       throw new Error(error);  
     }
