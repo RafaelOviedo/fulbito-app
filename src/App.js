@@ -31,7 +31,7 @@ function App() {
 
   const getCurrentMatchId = useCallback(async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}`);
+      const response = await axios.get(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}`);
       const currentMatchId = response.data[response.data.length - 1]?._id;
       setCurrentMatchId(currentMatchId);
     } 
@@ -46,7 +46,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      await axios.delete(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}/${matchId}`);
+      await axios.delete(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}/${matchId}`);
       setCurrentMatchId(currentMatchId);
       getCurrentMatchId();
       setIsLoading(false);

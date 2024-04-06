@@ -21,7 +21,7 @@ function PlayersList({ matchTypeEndpoint }) {
   const toast = useRef(null);
 
   const getAllPlayers = useCallback(async () => {
-    const response = await axios.get(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}`);
+    const response = await axios.get(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}`);
     const currentMatchPlayers = response.data[response.data.length - 1]?.players;
     const currentMatchId = response.data[response.data.length - 1]?._id;
     setAllPlayers(currentMatchPlayers);
@@ -43,7 +43,7 @@ function PlayersList({ matchTypeEndpoint }) {
     setIsLoading(true);
 
     try {
-      await axios.post(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}/${matchId}`, { name: newPlayer, payment: false, voucher: null });
+      await axios.post(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}/${matchId}`, { name: newPlayer, payment: false, voucher: null });
       setNewPlayer('');
       getAllPlayers();
     } 
@@ -55,7 +55,7 @@ function PlayersList({ matchTypeEndpoint }) {
 
   const deleteMatchPlayer = async (matchId, playerId) => {
     setIsLoading(true);
-    await axios.delete(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}/${matchId}/player/${playerId}`);
+    await axios.delete(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}/${matchId}/player/${playerId}`);
     getAllPlayers();
   }
 
@@ -83,7 +83,7 @@ function PlayersList({ matchTypeEndpoint }) {
     const formData = new FormData();
     formData.append('image', image);
 
-    await axios.patch(`${process.env.REACT_APP_PROD_API_FLO}/${matchTypeEndpoint()}/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
+    await axios.patch(`${process.env.REACT_APP_PROD_API}/${matchTypeEndpoint()}/${(currentMatchId)}/player/${playerID}`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
     showToast();
     getAllPlayers();
     setIsModalOpen(false);
