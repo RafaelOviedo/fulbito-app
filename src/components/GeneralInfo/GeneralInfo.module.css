@@ -140,6 +140,6 @@
 
 @media screen and (width > 768px) {
   .generalInfoComponent {
-    width: 50%;
+    width: 100%;
   }
 }

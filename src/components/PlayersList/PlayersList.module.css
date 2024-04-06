@@ -314,7 +314,7 @@
 
 @media screen and (width > 768px) {
   .playersListComponent {
-    width: 50%;
+    width: 100%;
   }
   .uploadShowPhotoModal {
     left: 25%;

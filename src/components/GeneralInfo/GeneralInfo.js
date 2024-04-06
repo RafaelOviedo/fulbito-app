@@ -83,7 +83,7 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
   return (
     <div className={style.generalInfoComponent} style={ isDataStored ? { height: '20%' } : { height: '30%' }}>
       <div className={style.generalInfoTitleContainer}>
-        <h3>Informacion General</h3>
+        <h3>Informacion General { matchTypeEndpoint() === 'matches_8' ? 'Fut 8' : 'Fut 5' }</h3>
       </div>
 
       <div className={style.generalInfoContainer}>

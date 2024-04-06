@@ -118,7 +118,7 @@ function PlayersList({ matchTypeEndpoint }) {
             <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
             <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton} disabled={!newPlayer.length} style={!newPlayer.length ? { opacity: 0.5 } : {}}>&#10004;</button>
             <div className={style.playersLengthContainer}>
-              <span className={style.playersLength}><b>{allPlayers?.length}</b>/20 agregados</span>
+              <span className={style.playersLength}><b>{allPlayers?.length || 0}</b>/20 agregados</span>
             </div>
           </div>
         </div>
