@@ -90,11 +90,6 @@ function PlayersList({ matchTypeEndpoint }) {
     setIsLoadingVoucherUpload(false);
   }
 
-  const getVoucherImage = (bufferData) => {
-    const blob = new Blob([new Uint8Array(bufferData)], { type: 'image/jpeg' });
-    return URL.createObjectURL(blob);
-  }
-
   const allPlayersHavePaid = () => {
     return allPlayers?.every((player) => player.payment === true);
   }
@@ -127,8 +122,8 @@ function PlayersList({ matchTypeEndpoint }) {
 
         <div className={style.listHeader}>
           <div className={style.listNameHeader}>Nombre</div>
-          {/* <div className={style.listPaymentHeader}>Pagó?</div>
-          <div className={style.listVoucherHeader}>Comprobante</div> */}
+          <div className={style.listPaymentHeader}>Pagó?</div>
+          <div className={style.listVoucherHeader}>Comprobante</div>
           <div className={style.listActionHeader}>Acción</div>
         </div>
 
@@ -144,8 +139,8 @@ function PlayersList({ matchTypeEndpoint }) {
                 allPlayers && allPlayers?.map((player) => (
                   <div key={player._id} className={style.playerRow}>
                     <div className={style.playerNameColumn}>{ player.name }</div>
-                    {/* <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
-                    <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Mostrar' : 'Subir' }</button> */}
+                    <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
+                    <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Mostrar' : 'Subir' }</button>
                     <div className={style.playerActionColumn}>
                       <button 
                         onClick={() => deleteMatchPlayer(currentMatchId, player._id)} 
@@ -180,7 +175,7 @@ function PlayersList({ matchTypeEndpoint }) {
                   :
                   <div className={style.voucherImageContainer}>
                     <span>Comprobante de { player.name }</span>
-                    <img className={style.voucherImage} src={getVoucherImage(player.voucher?.data)} alt="voucher" />
+                    <img className={style.voucherImage} src={player.voucher} alt="voucher" />
                   </div>
                 }
               </div>
