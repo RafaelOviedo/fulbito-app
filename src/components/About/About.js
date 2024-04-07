@@ -21,7 +21,7 @@ function About() {
       </div>
 
       <div className={style.versionContainer}>
-        <span>Version: 1.1.0</span>
+        <span>Version: 1.2.0</span>
       </div>
     </div>
   )
