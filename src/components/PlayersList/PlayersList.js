@@ -88,6 +88,7 @@ function PlayersList({ matchTypeEndpoint }) {
     getAllPlayers();
     setIsModalOpen(false);
     setIsLoadingVoucherUpload(false);
+    setImage(null);
   }
 
   const allPlayersHavePaid = () => {
