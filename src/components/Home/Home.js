@@ -22,8 +22,8 @@ function Home({ currentMatchId, onGeneralInfoChange, onMatchTypeChange, matchTyp
   return (
     <div className={style.homeContainer}>
       <div className={style.toggleMatchTypeContainer}>
-        <button onClick={setMatch8Option} className={style.matchTypeButton} style={ isFut8Match ? { borderBottom: '2px solid #000' } : {} }>Partida Fut 8</button>
-        <button onClick={setMatch5Option} className={style.matchTypeButton} style={ !isFut8Match ? { borderBottom: '2px solid #000' } : {} }>Partida Fut 5</button>
+        <button onClick={setMatch8Option} className={style.matchTypeButton} style={ isFut8Match ? { borderBottom: '2px solid #000' } : {} }>Match F8</button>
+        <button onClick={setMatch5Option} className={style.matchTypeButton} style={ !isFut8Match ? { borderBottom: '2px solid #000' } : {} }>Match F5</button>
       </div>
 
       {

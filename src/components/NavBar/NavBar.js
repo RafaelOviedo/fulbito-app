@@ -23,7 +23,7 @@ function NavBar() {
         className={style.homeLink} 
         style={isHomeSelected ? { borderBottom: '2px solid #000' } : {}}
       >
-      Inicio
+      Home
       </Link>
       <Link 
         to='/about' 
@@ -31,7 +31,7 @@ function NavBar() {
         className={style.aboutLink} 
         style={isAboutSelected ? { borderBottom: '2px solid #000' } : {}}
       >
-      Sobre
+      About
       </Link>
     </nav>
   )

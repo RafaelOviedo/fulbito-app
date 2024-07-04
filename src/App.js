@@ -78,8 +78,8 @@ function App() {
   return (
     <div className={style.appContainer}>
       <NavBar />
-      <div class={style.titleContainer}>Organizador para los pibes del futbol</div>
-      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={buttonStyle}>{ isMatch8Type ? '+ Crear Nueva Partida Fut 8' : '+ Crear Nueva Partida Fut 5' }</button>
+      <div class={style.titleContainer}>Football Organizer</div>
+      <button onClick={openModal} className={style.createNewMatchButton} disabled={!currentMatchId} style={buttonStyle}>{ isMatch8Type ? '+ Create new F8 match' : '+ Create new F5 match' }</button>
       <Routes>
         <Route path='/' element={<Home currentMatchId={currentMatchId} onGeneralInfoChange={changeGeneralInfo} onMatchTypeChange={changeMatchType} matchTypeEndpoint={matchTypeEndpoint} />} />
         <Route path='/about' element={<About />} />
@@ -94,13 +94,13 @@ function App() {
 
             <div className={style.modalContentContainer}>
               <div className={style.modalMessageContainer}>
-                <p style={{ textAlign: 'center' }}>Si creas una nueva partida, se borrarán los datos anteriores</p>
-                <b>¿Deseas continuar?</b>
+                <p style={{ textAlign: 'center' }}>If you create a new match, previous match information will be removed</p>
+                <b>You want to continue?</b>
               </div>  
 
               <div className={style.modalButtonsContainer}>
-                <button className={style.cancelModalButton} onClick={closeModal}>Cancelar</button>
-                <button className={style.createMatchModalButton} onClick={() => createNewMatch(currentMatchId)}>{ isLoading ? <ProgressSpinner style={{width: '30px', height: '30px'}} strokeWidth="4" /> : 'Crear Partida' }</button>
+                <button className={style.cancelModalButton} onClick={closeModal}>Cancel</button>
+                <button className={style.createMatchModalButton} onClick={() => createNewMatch(currentMatchId)}>{ isLoading ? <ProgressSpinner style={{width: '30px', height: '30px'}} strokeWidth="4" /> : 'Create Match' }</button>
               </div>
             </div>
           </div>

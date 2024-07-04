@@ -73,7 +73,7 @@ function PlayersList({ matchTypeEndpoint }) {
   };
 
   const showToast = () => {
-    toast.current.show({ severity: 'success', summary: 'Éxito', detail: 'Comprobante subido!', life: 5000 });
+    toast.current.show({ severity: 'success', summary: 'Success', detail: 'Voucher uploaded!', life: 5000 });
   };
 
   const uploadPlayerPhoto = async (e) => {
@@ -104,28 +104,28 @@ function PlayersList({ matchTypeEndpoint }) {
       <Toast ref={toast} position="top-center" />
 
       <div className={style.listTitleContainer}>
-        <h3>{ allPlayers?.length === MAX_LIST_PLAYERS && allPlayersHavePaid() ? <span style={{ color: 'red' }}>Lista Cerrada</span> : 'Lista' }</h3>
+        <h3>{ allPlayers?.length === MAX_LIST_PLAYERS && allPlayersHavePaid() ? <span style={{ color: 'red' }}>List is Closed</span> : 'Players List' }</h3>
       </div>
 
       <div className={style.listContainer}>
         <div className={style.playerInputContainer} style={ allPlayers?.length === MAX_LIST_PLAYERS ? { pointerEvents: 'none', opacity: 0.5 } : {} }>
-          <label className={style.playerInputLabel}>Agregar jugador:</label>
+          <label className={style.playerInputLabel}>Add player:</label>
           <div className={style.inputAndButtonContainer}>
             <input onChange={e => handleNewPlayerClick(e.target.value)} value={newPlayer} className={style.playerInput} type='text' />
             <button onClick={() => addPlayerToList(currentMatchId)} className={style.playerConfirmButton} disabled={!newPlayer.length} style={!newPlayer.length ? { opacity: 0.5 } : {}}>&#10004;</button>
             <div className={style.playersLengthContainer}>
-              <span className={style.playersLength}><b>{allPlayers?.length || 0}</b>/20 agregados</span>
+              <span className={style.playersLength}><b>{allPlayers?.length || 0}</b>/20 added</span>
             </div>
           </div>
         </div>
 
-        { showErrorMessage ? <div className={style.noSelectedPlayersError}>No puedes agregar jugadores sin tener una partida seleccionada</div> : '' }
+        { showErrorMessage ? <div className={style.noSelectedPlayersError}>You can't add players without having a selected match</div> : '' }
 
         <div className={style.listHeader}>
-          <div className={style.listNameHeader}>Nombre</div>
-          <div className={style.listPaymentHeader}>Pagó?</div>
-          <div className={style.listVoucherHeader}>Comprobante</div>
-          <div className={style.listActionHeader}>Acción</div>
+          <div className={style.listNameHeader}>Name</div>
+          <div className={style.listPaymentHeader}>Did pay?</div>
+          <div className={style.listVoucherHeader}>Voucher</div>
+          <div className={style.listActionHeader}>Action</div>
         </div>
 
         {
@@ -135,13 +135,13 @@ function PlayersList({ matchTypeEndpoint }) {
             <div className={style.playersListContainer}>
               {
                 !allPlayers?.length ? (
-                  <div className={style.noPlayersDisplayed}>No se han agregado jugadores aun</div>
+                  <div className={style.noPlayersDisplayed}>No players have been added yet</div>
                 ) :
                 allPlayers && allPlayers?.map((player) => (
                   <div key={player._id} className={style.playerRow}>
                     <div className={style.playerNameColumn}>{ player.name }</div>
-                    <div className={style.playerPaymentColumn}>{ player.payment ? 'Sí ✅' : 'No ❌' }</div>
-                    <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Mostrar' : 'Subir' }</button>
+                    <div className={style.playerPaymentColumn}>{ player.payment ? 'Yes ✅' : 'No ❌' }</div>
+                    <button onClick={() => openModal(player)} className={style.playerVoucherColumn}>{ player.payment ? 'Show' : 'Upload' }</button>
                     <div className={style.playerActionColumn}>
                       <button 
                         onClick={() => deleteMatchPlayer(currentMatchId, player._id)} 
@@ -166,16 +166,16 @@ function PlayersList({ matchTypeEndpoint }) {
               <div className={style.modalContentContainer}>
                 { !player.payment ?
                   <div className={style.voucherUploadContainer}>
-                    <p style={{ textAlign: 'center' }}>Sube el comprobante del pago <br /> de la partida</p>
+                    <p style={{ textAlign: 'center' }}>Upload the voucher image <br /> of the match payment</p>
 
                     <form onSubmit={uploadPlayerPhoto} className={style.formContainer}>
                       <input id='image' type="file" onChange={handleImageChange} name='image' accept='image/*' className={style.uploadVoucherInput} placeholder='hehfjeh' />
-                      <button type='submit' className={style.uploadButton} disabled={!image}>{ isLoadingVoucherUpload ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Subir Comprobante' }</button>
+                      <button type='submit' className={style.uploadButton} disabled={!image}>{ isLoadingVoucherUpload ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Upload Image' }</button>
                     </form> 
                   </div>
                   :
                   <div className={style.voucherImageContainer}>
-                    <span>Comprobante de { player.name }</span>
+                    <span>Voucher of { player.name }</span>
                     <img className={style.voucherImage} src={player.voucher} alt="voucher" />
                   </div>
                 }

@@ -4,11 +4,13 @@ function About() {
   return (
     <div className={style.aboutComponent}>
       <div className={style.textContainer}>
-        <p>Esta applicacion fue creada para organizar de manera mas eficiente las partidas con los pibes del futbol.</p>
+        <p>
+          This app was created to organize football matches between friends.
+        </p>
       </div>
 
       <div className={style.socialMediaContainer}>
-        <h3 className={style.socialMediaText}>Mas info sobre su creador:</h3>
+        <h3 className={style.socialMediaText}>Creator info:</h3>
 
         <div className={style.iconsContainer}>
           <a className={style.githubIconContainer} href="https://github.com/RafaelOviedo" target="_blank" rel="noreferrer">
@@ -21,7 +23,7 @@ function About() {
       </div>
 
       <div className={style.versionContainer}>
-        <span>Version: 1.2.0</span>
+        <span>Version: 1.3.0</span>
       </div>
     </div>
   )

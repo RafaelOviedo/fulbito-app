@@ -83,7 +83,7 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
   return (
     <div className={style.generalInfoComponent} style={ isDataStored ? { height: '20%' } : { height: '30%' }}>
       <div className={style.generalInfoTitleContainer}>
-        <h3>Informacion General { matchTypeEndpoint() === 'matches_8' ? 'Fut 8' : 'Fut 5' }</h3>
+        <h3>General Information { matchTypeEndpoint() === 'matches_8' ? 'F8' : 'F5' }</h3>
       </div>
 
       <div className={style.generalInfoContainer}>
@@ -94,9 +94,9 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
             <div className={style.inputsContainer} style={ isDataStored ? { display: 'none' } : { height: '100%' }}>
               <div className={style.inputsRowOneContainer}>
                 <div className={style.locationInputContainer}>
-                  <label className={style.locationInputLabel}>Lugar del partido:</label>
+                  <label className={style.locationInputLabel}>Place of the match:</label>
                   <select onChange={e => selectLocation(e.target.value)} className={style.locationSelect}>
-                    <option value="">Elegi una sede</option>
+                    <option value="">Choose a pitch</option>
                     <option value="El Predio - Arregui 2485">El Predio - Arregui 2540</option>
                     <option value="El Poli">El Poli</option>
                     <option value="Futbol Comu">Futbol Comu</option>
@@ -104,14 +104,14 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
                 </div>
 
                 <div className={style.dateInputContainer} disabled>
-                  <label className={style.dateInputLabel}>Día del partido:</label>
+                  <label className={style.dateInputLabel}>Day of the match:</label>
                   <DatePicker onChange={selectDate} slotProps={{ textField: { size: 'small' } }} />
                 </div>
               </div>
 
               <div className={style.inputsRowTwoContainer}>
                 <div className={style.paymentAliasInputContainer} disabled>
-                  <label className={style.paymentAliasInputLabel}>Alias para el pago:</label>
+                  <label className={style.paymentAliasInputLabel}>Alias for payment:</label>
                   <div className={style.inputAndButtonContainer}>
                     <input onChange={e => handleAliasChange(e.target.value)} onBlur={selectAlias} className={style.paymentAliasInput} value={aliasValue} type='text' />
                   </div>
@@ -119,16 +119,16 @@ function GeneralInfo({ onGeneralInfoChange, matchTypeEndpoint }) {
               </div>
 
               <div className={style.saveGeneralInfoButtonContainer}>
-                <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5, pointerEvents: 'none' } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>{ isLoading ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Guardar Informacion General'}</button>
+                <button onClick={saveGeneralInfo} className={style.saveGeneralInfoButton} style={!selectedLocation || !selectedDate || !selectedAlias ? { opacity: 0.5, pointerEvents: 'none' } : {}} disabled={!selectedLocation || !selectedDate || !selectedAlias}>{ isLoading ? <ProgressSpinner style={{width: '35px', height: '35px'}} strokeWidth="4" /> : 'Save General Information'}</button>
               </div>
             </div>
           )
         }
 
         <div className={style.summaryContainer} style={ !isDataStored ? { display: 'none' } : { height: '100%' }}>
-          <span><b>Cancha Elegida:</b> { selectedLocation }</span>
-          <span><b>Fecha Elegida:</b> { selectedDate }</span>
-          <span><b>Alias para el pago:</b> { selectedAlias }</span>
+          <span><b>Chosen Pitch:</b> { selectedLocation }</span>
+          <span><b>Chosen Date:</b> { selectedDate }</span>
+          <span><b>Alias for payment:</b> { selectedAlias }</span>
         </div>
       </div>
     </div>
